@@ -1,9 +1,10 @@
 import { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { AuthContext } from "../../../providers/AuthProvider";
 
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
+  const location = useLocation();
 
   const handleLogOut = () => {
     logout()
@@ -21,6 +22,9 @@ const Navbar = () => {
       </li>
       <li>
         <Link to="/order/salad">Order Food</Link>
+      </li>
+      <li>
+        <Link to="/secret">secret</Link>
       </li>
     </>
   );
@@ -68,7 +72,9 @@ const Navbar = () => {
           ) : (
             <>
               <li>
-                <Link to="/login">Login</Link>
+                <Link to="/login" state={{ from: location }}>
+                  Login
+                </Link>
               </li>
             </>
           )}
