@@ -53,7 +53,8 @@ const DashBoard = () => {
         </ul>
       </div>
       {/* dashboard side bar  */}
-      <div className="flex-1">
+      <div className="flex-1 p-8">
+        {" "}
         <Outlet />
       </div>
     </div>
