@@ -1,6 +1,7 @@
 import {
   FaAd,
   FaCalendar,
+  FaEnvelope,
   FaHome,
   FaList,
   FaSearch,
@@ -11,6 +12,9 @@ import useCart from "../hooks/useCart";
 
 const DashBoard = () => {
   const [cart] = useCart();
+
+  const isAdmin = true;
+
   return (
     <div className="flex">
       {/* dashboard side bar */}
@@ -41,6 +45,7 @@ const DashBoard = () => {
               <FaList /> My Bookings
             </NavLink>
           </li>
+          {/* shared nav link  */}
           <div className="divider"></div>
           <li>
             <NavLink to="/">
@@ -50,6 +55,11 @@ const DashBoard = () => {
           <li>
             <NavLink to="/order/salad">
               <FaSearch /> Menu
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/order/contant">
+              <FaEnvelope /> Contant
             </NavLink>
           </li>
         </ul>
