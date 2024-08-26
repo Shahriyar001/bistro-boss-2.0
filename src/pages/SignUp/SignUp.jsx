@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
@@ -16,48 +16,108 @@ const SignUp = () => {
     formState: { errors },
   } = useForm();
   const { createUser, updateUserProfile } = useContext(AuthContext);
-
   const navigate = useNavigate();
+  const [signUpError, setSignUpError] = useState("");
 
   const onSubmit = (data) => {
-    createUser(data.email, data.password).then((result) => {
-      const loggedUser = result.user;
-      console.log(loggedUser);
-      updateUserProfile(data.name, data.photoURL)
-        .then(() => {
-          // create user entry in the database
-          const userInfo = {
-            name: data.name,
-            email: data.email,
-            pass: data.password,
-          };
-          axiosPublic.post("/users", userInfo).then((res) => {
-            if (res.data.insertedId) {
-              reset();
-              Swal.fire({
-                title: "User Create Successful",
-                showClass: {
-                  popup: `
+    setSignUpError("");
+    createUser(data.email, data.password)
+      .then((result) => {
+        const loggedUser = result.user;
+        console.log(loggedUser);
+        updateUserProfile(data.name, data.photoURL)
+          .then(() => {
+            // create user entry in the database
+            const userInfo = {
+              name: data.name,
+              email: data.email,
+              pass: data.password,
+            };
+            axiosPublic.post("/users", userInfo).then((res) => {
+              if (res.data.insertedId) {
+                reset();
+                Swal.fire({
+                  title: "User Create Successful",
+                  showClass: {
+                    popup: `
                 animate__animated
                 animate__fadeInUp
                 animate__faster
               `,
-                },
-                hideClass: {
-                  popup: `
+                  },
+                  hideClass: {
+                    popup: `
                 animate__animated
                 animate__fadeOutDown
                 animate__faster
               `,
-                },
-              });
-              setTimeout(navigate("/"), 1000);
-            }
+                  },
+                });
+                setTimeout(navigate("/"), 1000);
+              }
+            });
+          })
+          .catch((error) => {
+            console.log(error);
+            setSignUpError(error.messages);
           });
-        })
-        .catch((error) => console.log(error));
-    });
+      })
+      // .catch((error) => {
+      //   console.log(error);
+      //   setSignUpError(errors.messages);
+      // });
+      .catch((error) => {
+        console.log(error.message);
+        setSignUpError(error.message); // Display the actual error message
+      });
   };
+
+  // const onSubmit = (data) => {
+  //   setSignUpError(""); // Clear any previous errors
+  //   createUser(data.email, data.password)
+  //     .then((result) => {
+  //       const loggedUser = result.user;
+  //       updateUserProfile(data.name, data.photoURL)
+  //         .then(() => {
+  //           const userInfo = {
+  //             name: data.name,
+  //             email: data.email,
+  //             pass: data.password,
+  //           };
+  //           axiosPublic.post("/users", userInfo).then((res) => {
+  //             if (res.data.insertedId) {
+  //               reset();
+  //               Swal.fire({
+  //                 title: "User Create Successful",
+  //                 showClass: {
+  //                   popup: `
+  //                     animate__animated
+  //                     animate__fadeInUp
+  //                     animate__faster
+  //                   `,
+  //                 },
+  //                 hideClass: {
+  //                   popup: `
+  //                     animate__animated
+  //                     animate__fadeOutDown
+  //                     animate__faster
+  //                   `,
+  //                 },
+  //               });
+  //               setTimeout(() => navigate("/"), 1000);
+  //             }
+  //           });
+  //         })
+  //         .catch((error) => {
+  //           console.log(error.message);
+  //           setSignUpError(error.message); // Display the actual error message
+  //         });
+  //     })
+  //     .catch((error) => {
+  //       console.log(error.message);
+  //       setSignUpError(error.message); // Display the actual error message
+  //     });
+  // };
 
   return (
     <>
@@ -149,6 +209,7 @@ const SignUp = () => {
                 <button type="submit" className="btn btn-primary">
                   Sign UP
                 </button>
+                {signUpError && <p className="text-red-600">{signUpError}</p>}
               </div>
             </form>
             <p className="px-6">
