@@ -44,7 +44,7 @@ const AuthProvider = ({ children }) => {
     });
   };
 
-  const logout = () => {
+  const logOut = () => {
     setLoading(true);
     return signOut(auth);
   };
@@ -70,7 +70,7 @@ const AuthProvider = ({ children }) => {
     return () => {
       return unsubscribe();
     };
-  }, []);
+  }, [axiosPublic]);
 
   const authInfo = {
     user,
@@ -79,7 +79,7 @@ const AuthProvider = ({ children }) => {
     updateUserProfile,
     googleSignIn,
     signIn,
-    logout,
+    logOut,
   };
 
   return (

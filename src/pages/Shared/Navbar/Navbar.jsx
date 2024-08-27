@@ -5,11 +5,11 @@ import { FaCartArrowDown } from "react-icons/fa";
 import useCart from "../../../hooks/useCart";
 
 const Navbar = () => {
-  const { user, logout } = useContext(AuthContext);
+  const { user, logOut } = useContext(AuthContext);
   const [cart] = useCart();
 
-  const handleLogOut = () => {
-    logout()
+  const handlelogOut = () => {
+    logOut()
       .then(() => {})
       .catch((error) => console.log(error));
   };
@@ -81,8 +81,8 @@ const Navbar = () => {
                 </div>
               </div>
               <p className="md:mx-2 mx-1">{user?.displayName}</p>
-              <button onClick={handleLogOut} className="btn btn-ghost">
-                Logout
+              <button onClick={handlelogOut} className="btn btn-ghost">
+                logOut
               </button>
             </>
           ) : (
