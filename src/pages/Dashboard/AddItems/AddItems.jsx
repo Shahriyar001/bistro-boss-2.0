@@ -13,6 +13,7 @@ const AddItems = () => {
   const { register, handleSubmit, reset } = useForm();
   const axiosPublic = useAxiosPublic();
   const axiosSecure = useAxiosSecure();
+  console.log(axiosSecure);
 
   const onSubmit = async (data) => {
     console.log(data.image[0].name);
